@@ -3,6 +3,7 @@
 > **AI-Powered Technical Support Extension with Real-Time Documentation Crawling**
 
 [![Chrome Web Store](https://img.shields.io/badge/Chrome%20Web%20Store-v2.0.0-blue.svg)](https://chrome.google.com/webstore)
+[![Website](https://img.shields.io/badge/Website-Live-green.svg)](https://techsup-pqk6xt.manus.space)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Bug Bounty](https://img.shields.io/badge/Bug%20Bounty-Active-red.svg)](BUG_BOUNTY.md)
 
@@ -30,6 +31,14 @@
 - **Local Storage** - API keys stored securely in your browser
 - **No Data Collection** - Your conversations stay private
 - **Secure API Calls** - Direct communication with OpenAI
+
+---
+
+## 🌐 **Live Website**
+
+**Try the Enhanced Tech Support Assistant online:** [https://techsup-pqk6xt.manus.space](https://techsup-pqk6xt.manus.space)
+
+Experience the full functionality of our AI-powered tech support system directly in your browser without installing the extension.
 
 ---
 
