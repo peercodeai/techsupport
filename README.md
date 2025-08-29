@@ -5,7 +5,6 @@
 [![Chrome Web Store](https://img.shields.io/badge/Chrome%20Web%20Store-v2.0.0-blue.svg)](https://chrome.google.com/webstore)
 [![Website](https://img.shields.io/badge/Website-Live-green.svg)](https://techsup-pqk6xt.manus.space)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Bug Bounty](https://img.shields.io/badge/Bug%20Bounty-Active-red.svg)](BUG_BOUNTY.md)
 
 ## ✨ **Features**
 
@@ -40,12 +39,23 @@
 
 Experience the full functionality of our AI-powered tech support system directly in your browser without installing the extension.
 
+> **Note:** This extension is currently under review for the Chrome Web Store. In the meantime, you can download the zip file and load it as an unpacked extension for immediate use.
+
 ---
 
 ## 🚀 **Quick Start**
 
-### **1. Install Extension**
-1. Download or clone this repository
+### **1. Install Extension (While Awaiting Chrome Web Store Review)**
+
+**Option A: Download Latest Release**
+1. Download the latest release zip file from this repository
+2. Extract the zip file to a folder on your computer
+3. Open Chrome Extensions (`chrome://extensions/`)
+4. Enable **Developer Mode**
+5. Click **"Load unpacked"** and select the extracted extension folder
+
+**Option B: Clone Repository**
+1. Clone this repository: `git clone https://github.com/peercodeai/techsupport.git`
 2. Open Chrome Extensions (`chrome://extensions/`)
 3. Enable **Developer Mode**
 4. Click **"Load unpacked"** and select the extension folder
@@ -330,7 +340,7 @@ npm run package
 - Test on multiple websites and scenarios
 
 ### **Bug Reports**
-- Use the [bug bounty program](BUG_BOUNTY.md) for critical issues
+- Report issues via [GitHub Issues](https://github.com/peercodeai/techsupport/issues)
 - Provide detailed reproduction steps
 - Include console logs and screenshots
 - Specify browser version and OS
