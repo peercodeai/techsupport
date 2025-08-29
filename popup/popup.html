@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Support Assistant</title>
+    <link rel="stylesheet" href="../styles/popup-modern.css">
+</head>
+<body>
+    <div class="chat-bubble-container">
+        <!-- Draggable Header -->
+        <div class="chat-bubble-header" id="drag-handle">
+            <div class="status-indicator" id="status-light"></div>
+            <div class="status-indicator doc-status" id="doc-status-light" title="Documentation Status"></div>
+            <h3>Tech Support Assistant</h3>
+        </div>
+
+        <!-- Chat Content -->
+        <div class="chat-bubble-content">
+            <div class="chat-messages" id="chat-messages">
+                <div class="welcome-message">
+                    <h3>👋 Need Tech Help?</h3>
+                    <p>I'm here to assist with any technical issues. Just ask!</p>
+                </div>
+            </div>
+            
+            <div class="chat-input-area">
+                <input type="text" id="chat-input" placeholder="Describe your issue..." class="chat-input">
+                <button id="send-btn" class="send-btn">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="status-monitor.js"></script>
+    <script src="file-handler.js"></script>
+    <script src="url-monitor.js"></script>
+    <script src="chat-handler.js"></script>
+    <script src="popup.js"></script>
+</body>
+</html>
+

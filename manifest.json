@@ -1,0 +1,52 @@
+{
+  "manifest_version": 3,
+  "name": "Enhanced Tech Support Assistant",
+  "version": "2.0.0",
+  "description": "Advanced tech support extension with document upload, URL crawling, real-time monitoring, and intelligent troubleshooting",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "background",
+    "webRequest",
+    "webNavigation",
+    "tabs",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background/service-worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/content-script.js"],
+      "css": ["styles/content.css"],
+      "run_at": "document_start"
+    }
+  ],
+  "action": {
+    "default_title": "Enhanced Tech Support Assistant",
+    "default_icon": {
+      "16": "assets/icon16.png",
+      "32": "assets/icon32.png",
+      "48": "assets/icon48.png",
+      "128": "assets/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "assets/icon16.png",
+    "32": "assets/icon32.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/*", "styles/*", "popup/*"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "options_page": "popup/options.html"
+}
+

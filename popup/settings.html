@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Enhanced Tech Support Assistant</title>
+    <link rel="stylesheet" href="../styles/popup-modern.css">
+    <style>
+        .settings-container {
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .settings-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+        }
+        
+        .settings-header h1 {
+            margin: 0;
+            color: #1f2937;
+            font-size: 28px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .settings-section {
+            background: rgba(255, 255, 255, 0.9);
+            margin-bottom: 24px;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .settings-section h3 {
+            margin: 0 0 16px 0;
+            color: #1f2937;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 16px 0;
+            padding: 16px;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+        
+        .setting-label {
+            font-weight: 500;
+            color: #374151;
+        }
+        
+        .setting-description {
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+        
+        .api-key-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            background: white;
+            transition: all 0.3s ease;
+        }
+        
+        .api-key-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .api-key-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .status-indicator.connected {
+            background: linear-gradient(135deg, #10b981, #059669);
+            animation: pulse 2s infinite;
+        }
+        
+        .status-indicator.disconnected {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            background: #ccc;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .toggle-switch.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+        
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .toggle-switch.active::after {
+            transform: translateX(26px);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+        
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+        
+        .save-button {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 24px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .save-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+        
+        .save-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .status-message {
+            padding: 12px 16px;
+            margin: 16px 0;
+            border-radius: 8px;
+            display: none;
+            font-weight: 500;
+        }
+        
+        .status-message.success {
+            background: rgba(16, 185, 129, 0.1);
+            color: #065f46;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+        
+        .status-message.error {
+            background: rgba(239, 68, 68, 0.1);
+            color: #991b1b;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+        
+        .api-key-info {
+            background: rgba(102, 126, 234, 0.05);
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 16px;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+        
+        .api-key-info h4 {
+            margin: 0 0 12px 0;
+            color: #1f2937;
+            font-size: 14px;
+        }
+        
+        .api-key-info ol {
+            margin: 0;
+            padding-left: 20px;
+            color: #6b7280;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        
+        .api-key-info a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .api-key-info a:hover {
+            text-decoration: underline;
+        }
+        
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            color: #6b7280;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(20px);
+        }
+        
+        .back-button:hover {
+            background: rgba(255, 255, 255, 1);
+            color: #1f2937;
+            transform: translateY(-1px);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body>
+    <button class="back-button" id="back-btn" title="Back to Main">←</button>
+    
+    <div class="settings-container">
+        <div class="settings-header">
+            <h1>⚙️ Settings</h1>
+            <p>Configure your Enhanced Tech Support Assistant</p>
+        </div>
+        
+        <!-- API Configuration Section -->
+        <div class="settings-section">
+            <h3>🔑 AI API Configuration</h3>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">OpenAI API Key</div>
+                    <div class="setting-description">Your personal API key for AI-powered features</div>
+                </div>
+                <div class="api-key-status">
+                    <div class="status-indicator" id="api-status-indicator"></div>
+                    <span id="api-status-text">Not Configured</span>
+                </div>
+            </div>
+            
+            <input type="password" id="api-key-input" class="api-key-input" placeholder="sk-..." />
+            
+            <div class="button-group">
+                <button class="btn btn-primary" id="test-api-btn">Test Connection</button>
+                <button class="btn btn-secondary" id="clear-api-btn">Clear Key</button>
+            </div>
+            
+            <div class="api-key-info">
+                <h4>How to get an API key:</h4>
+                <ol>
+                    <li>Go to <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI Platform</a></li>
+                    <li>Sign in or create an account</li>
+                    <li>Generate a new API key</li>
+                    <li>Copy and paste it here</li>
+                </ol>
+            </div>
+        </div>
+        
+        <!-- General Settings Section -->
+        <div class="settings-section">
+            <h3>⚡ General Settings</h3>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Enable Extension</div>
+                    <div class="setting-description">Turn the extension on/off globally</div>
+                </div>
+                <div class="toggle-switch" id="enable-extension"></div>
+            </div>
+            
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Show Page Indicator</div>
+                    <div class="setting-description">Display extension indicator on web pages</div>
+                </div>
+                <div class="toggle-switch" id="show-indicator"></div>
+            </div>
+            
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Auto-scan Pages</div>
+                    <div class="setting-description">Automatically scan pages for tech support content</div>
+                </div>
+                <div class="toggle-switch" id="auto-scan"></div>
+            </div>
+        </div>
+        
+        <!-- Monitoring Settings Section -->
+        <div class="settings-section">
+            <h3>📊 Monitoring Settings</h3>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">URL Crawl Interval</div>
+                    <div class="setting-description">How often to check monitored URLs for changes</div>
+                </div>
+                <select id="crawl-interval" style="padding: 8px; border-radius: 6px; border: 1px solid #d1d5db;">
+                    <option value="300000">5 minutes</option>
+                    <option value="900000">15 minutes</option>
+                    <option value="1800000">30 minutes</option>
+                    <option value="3600000">1 hour</option>
+                </select>
+            </div>
+            
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Status Check Interval</div>
+                    <div class="setting-description">How often to check system status</div>
+                </div>
+                <select id="status-interval" style="padding: 8px; border-radius: 6px; border: 1px solid #d1d5db;">
+                    <option value="30000">30 seconds</option>
+                    <option value="60000">1 minute</option>
+                    <option value="300000">5 minutes</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Notification Settings Section -->
+        <div class="settings-section">
+            <h3>🔔 Notification Settings</h3>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Enable Notifications</div>
+                    <div class="setting-description">Show browser notifications for important events</div>
+                </div>
+                <div class="toggle-switch" id="notifications"></div>
+            </div>
+            
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Sound Alerts</div>
+                    <div class="setting-description">Play sounds for notifications</div>
+                </div>
+                <div class="toggle-switch" id="sound-alerts"></div>
+            </div>
+        </div>
+        
+        <button class="save-button" id="save-settings">💾 Save All Settings</button>
+        
+        <div class="status-message" id="status-message"></div>
+    </div>
+
+    <script src="settings.js"></script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Tech Support Assistant - Options</title>
+    <link rel="stylesheet" href="../styles/popup-modern.css">
+    <style>
+        .options-container {
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .option-group {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+        
+        .option-group h3 {
+            margin-top: 0;
+            color: #333;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 8px;
+        }
+        
+        .option-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            background: #ccc;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .toggle-switch.active {
+            background: #4CAF50;
+        }
+        
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+        
+        .toggle-switch.active::after {
+            transform: translateX(26px);
+        }
+        
+        .save-button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        
+        .save-button:hover {
+            background: #45a049;
+        }
+        
+        .status-message {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .status-message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="options-container">
+        <h1>Enhanced Tech Support Assistant</h1>
+        <p>Configure your extension settings below:</p>
+        
+        <div class="option-group">
+            <h3>General Settings</h3>
+            <div class="option-item">
+                <span>Enable Extension</span>
+                <div class="toggle-switch" id="enableExtension"></div>
+            </div>
+            <div class="option-item">
+                <span>Show Page Indicator</span>
+                <div class="toggle-switch" id="showIndicator"></div>
+            </div>
+            <div class="option-item">
+                <span>Auto-scan Pages</span>
+                <div class="toggle-switch" id="autoScan"></div>
+            </div>
+        </div>
+        
+        <div class="option-group">
+            <h3>Notifications</h3>
+            <div class="option-item">
+                <span>Enable Notifications</span>
+                <div class="toggle-switch" id="notifications"></div>
+            </div>
+            <div class="option-item">
+                <span>Sound Alerts</span>
+                <div class="toggle-switch" id="soundAlerts"></div>
+            </div>
+        </div>
+        
+        <div class="option-group">
+            <h3>Scanning Options</h3>
+            <div class="option-item">
+                <span>Highlight Forms</span>
+                <div class="toggle-switch" id="highlightForms"></div>
+            </div>
+            <div class="option-item">
+                <span>Highlight Errors</span>
+                <div class="toggle-switch" id="highlightErrors"></div>
+            </div>
+            <div class="option-item">
+                <span>Highlight Warnings</span>
+                <div class="toggle-switch" id="highlightWarnings"></div>
+            </div>
+        </div>
+        
+        <button class="save-button" id="saveOptions">Save Settings</button>
+        
+        <div class="status-message" id="statusMessage"></div>
+    </div>
+
+    <script src="options.js"></script>
+</body>
+</html>
