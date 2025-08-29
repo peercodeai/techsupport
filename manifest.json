@@ -7,14 +7,9 @@
     "activeTab",
     "storage",
     "background",
-    "webRequest",
-    "webNavigation",
-    "tabs",
     "scripting"
   ],
-  "host_permissions": [
-    "<all_urls>"
-  ],
+  "host_permissions": [],
   "background": {
     "service_worker": "background/service-worker.js"
   },
