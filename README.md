@@ -5,7 +5,6 @@
 [![Chrome Web Store](https://img.shields.io/badge/Chrome%20Web%20Store-v2.0.0-blue.svg)](https://chrome.google.com/webstore)
 [![Website](https://img.shields.io/badge/Website-Live-green.svg)](https://techsup-pqk6xt.manus.space)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Bug Bounty](https://img.shields.io/badge/Bug%20Bounty-Active-red.svg)](BUG_BOUNTY.md)
 
 ## ✨ **Features**
 
@@ -40,12 +39,23 @@
 
 Experience the full functionality of our AI-powered tech support system directly in your browser without installing the extension.
 
+> **Note:** This extension is currently under review for the Chrome Web Store. In the meantime, you can download the zip file and load it as an unpacked extension for immediate use.
+
 ---
 
 ## 🚀 **Quick Start**
 
-### **1. Install Extension**
-1. Download or clone this repository
+### **1. Install Extension (While Awaiting Chrome Web Store Review)**
+
+**Option A: Download Latest Release**
+1. Download the latest release zip file from this repository
+2. Extract the zip file to a folder on your computer
+3. Open Chrome Extensions (`chrome://extensions/`)
+4. Enable **Developer Mode**
+5. Click **"Load unpacked"** and select the extracted extension folder
+
+**Option B: Clone Repository**
+1. Clone this repository: `git clone https://github.com/peercodeai/techsupport.git`
 2. Open Chrome Extensions (`chrome://extensions/`)
 3. Enable **Developer Mode**
 4. Click **"Load unpacked"** and select the extension folder
@@ -131,12 +141,6 @@ chrome.storage.local = {
 
 ## 🔧 **Configuration**
 
-### **Environment Variables**
-```bash
-# Optional: Set default API key (not recommended for production)
-OPENAI_API_KEY=your_key_here
-```
-
 ### **Extension Settings**
 - **Auto-scan pages** - Automatically analyze webpage content
 - **Notifications** - Enable/disable browser notifications
@@ -171,12 +175,6 @@ OPENAI_API_KEY=your_key_here
 3. **CORS**: Some sites may block cross-origin requests
 4. **Content Type**: Verify site serves HTML/text content
 
-### **Performance Issues**
-1. **Memory Usage**: Check browser memory consumption
-2. **Network Calls**: Monitor API request frequency
-3. **Page Load**: Ensure extension doesn't slow page loading
-4. **Background Processes**: Check service worker activity
-
 ---
 
 ## 🔍 **Debugging**
@@ -202,51 +200,6 @@ chrome.storage.local.get(null, console.log);
 - **Network Tab**: Track API calls and responses
 - **Storage Tab**: Inspect extension data
 
-### **Common Error Messages**
-```
-"Content script not ready yet" → Extension loading timing issue
-"Could not establish connection" → Background script communication failure
-"API Error: Invalid API key" → OpenAI authentication problem
-"Documentation access failed" → URL crawling or CORS issue
-```
-
----
-
-## 📚 **API Reference**
-
-### **Message Actions**
-```javascript
-// Toggle chat bubble visibility
-chrome.runtime.sendMessage({
-  action: 'toggleChatBubble',
-  visible: true
-});
-
-// Test documentation access
-chrome.runtime.sendMessage({
-  action: 'testDocumentationAccess',
-  url: 'https://docs.example.com'
-});
-
-// Get extension status
-chrome.runtime.sendMessage({
-  action: 'getStatus'
-});
-```
-
-### **Event Listeners**
-```javascript
-// Listen for status updates
-document.addEventListener('statusUpdate', (e) => {
-  console.log('Status changed:', e.detail);
-});
-
-// Listen for chat bubble messages
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  // Handle messages from background script
-});
-```
-
 ---
 
 ## 🚀 **Development**
@@ -261,9 +214,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 # Clone repository
 git clone https://github.com/peercodeai/techsupport.git
 cd techsupport
-
-# Install dependencies (if any)
-npm install
 
 # Load extension in Chrome
 # 1. Open chrome://extensions/
@@ -295,20 +245,8 @@ techsupport/
 ├── utils/                     # Utility functions
 │   └── drag-resize.js       # Drag and resize functionality
 ├── README.md                  # This file
-├── BUG_BOUNTY.md             # Bug bounty program
 ├── DEVELOPMENT.md             # Development guidelines
 └── LICENSE                    # License information
-```
-
-### **Building for Production**
-```bash
-# Create production build
-npm run build
-
-# Package extension
-npm run package
-
-# The extension will be ready for Chrome Web Store submission
 ```
 
 ---
@@ -330,7 +268,7 @@ npm run package
 - Test on multiple websites and scenarios
 
 ### **Bug Reports**
-- Use the [bug bounty program](BUG_BOUNTY.md) for critical issues
+- Report issues via [GitHub Issues](https://github.com/peercodeai/techsupport/issues)
 - Provide detailed reproduction steps
 - Include console logs and screenshots
 - Specify browser version and OS
@@ -348,7 +286,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **OpenAI** - For providing the GPT-4 API
 - **Chrome Extensions Team** - For the excellent documentation
 - **Open Source Community** - For inspiration and feedback
-- **Bug Hunters** - For finding and reporting issues
 
 ---
 
@@ -358,7 +295,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Issues**: [GitHub Issues](https://github.com/peercodeai/techsupport/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/peercodeai/techsupport/discussions)
 - **Email**: [Contact via GitHub Issues](https://github.com/peercodeai/techsupport/issues)
-- **Discord**: [Contact via GitHub Discussions](https://github.com/peercodeai/techsupport/discussions)
 
 ---
 
