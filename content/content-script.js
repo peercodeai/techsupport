@@ -5,136 +5,140 @@ console.log('Enhanced Tech Support Assistant content script loaded');
 (function() {
   'use strict';
   
-  // Check if extension is enabled
-  chrome.storage.local.get(['enabled'], (result) => {
+  let chatBubbleAssistant = null;
+  
+  // Check if extension is enabled and initialize
+  chrome.storage.local.get(['enabled', 'chatBubbleVisible'], (result) => {
     if (result.enabled !== false) {
-      initializeExtension();
+      initializeExtension(result.chatBubbleVisible !== false);
     }
   });
   
-  function initializeExtension() {
+  function initializeExtension(shouldShowChatBubble = true) {
     console.log('Initializing Enhanced Tech Support Assistant');
     
-    // Add extension indicator to the page
-    addExtensionIndicator();
-    
-    // Listen for messages from popup
-    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-      handleMessage(request, sendResponse);
-      return true;
-    });
+    // Wait for DOM to be ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        createChatBubble(shouldShowChatBubble);
+      });
+    } else {
+      createChatBubble(shouldShowChatBubble);
+    }
     
     // Listen for messages from background script
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-        console.log('Content script received message:', request);
-        
-        switch (request.action) {
-            case 'toggleChatBubble':
-                // Toggle chat bubble visibility
-                if (window.enhancedTechSupport) {
-                    window.enhancedTechSupport.toggleVisibility(request.visible);
-                }
-                sendResponse({ success: true });
-                break;
-                
-            case 'setChatBubbleVisibility':
-                // Set chat bubble visibility
-                if (window.enhancedTechSupport) {
-                    window.enhancedTechSupport.setVisibility(request.visible);
-                }
-                sendResponse({ success: true });
-                break;
-                
-            default:
-                sendResponse({ error: 'Unknown action' });
-        }
-        
-        return true; // Keep message channel open for async response
+      console.log('Content script received message:', request);
+      
+      switch (request.action) {
+        case 'toggleChatBubble':
+          if (chatBubbleAssistant) {
+            chatBubbleAssistant.toggleVisibility(request.visible);
+          }
+          sendResponse({ success: true });
+          break;
+          
+        case 'setChatBubbleVisibility':
+          if (chatBubbleAssistant) {
+            chatBubbleAssistant.setVisibility(request.visible);
+          }
+          sendResponse({ success: true });
+          break;
+          
+        default:
+          sendResponse({ error: 'Unknown action' });
+      }
+      
+      return true; // Keep message channel open for async response
     });
-    
-    // Monitor page for tech support related content
-    observePageChanges();
   }
   
-  function addExtensionIndicator() {
-    const indicator = document.createElement('div');
-    indicator.id = 'enhanced-tech-support-indicator';
-    indicator.style.cssText = `
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      width: 20px;
-      height: 20px;
-      background: #4CAF50;
-      border-radius: 50%;
-      z-index: 10000;
-      cursor: pointer;
-      opacity: 0.7;
-    `;
-    
-    indicator.title = 'Enhanced Tech Support Assistant Active';
-    indicator.addEventListener('click', () => {
-      chrome.runtime.sendMessage({ action: 'openPopup' });
-    });
-    
-    document.body.appendChild(indicator);
-  }
-  
-  function handleMessage(request, sendResponse) {
-    switch (request.action) {
-      case 'scanPage':
-        const pageInfo = analyzePage();
-        sendResponse({ success: true, data: pageInfo });
-        break;
-        
-      case 'getPageInfo':
-        const info = getPageInfo();
-        sendResponse({ success: true, data: info });
-        break;
-        
-      default:
-        sendResponse({ error: 'Unknown action' });
+  async function createChatBubble(visible = true) {
+    try {
+      // Create the chat bubble container
+      const chatBubble = document.createElement('div');
+      chatBubble.id = 'enhanced-tech-support-bubble';
+      chatBubble.className = 'enhanced-tech-support-bubble';
+      chatBubble.style.display = visible ? 'block' : 'none';
+      
+      // Add the chat bubble to the page
+      document.body.appendChild(chatBubble);
+      
+      // Initialize the ChatBubbleAssistant
+      if (typeof ChatBubbleAssistant !== 'undefined') {
+        chatBubbleAssistant = new ChatBubbleAssistant();
+        console.log('ChatBubbleAssistant initialized successfully');
+      } else {
+        console.error('ChatBubbleAssistant class not found - popup scripts may not be loaded');
+        // Fallback: create a simple chat bubble
+        createFallbackChatBubble(chatBubble);
+      }
+      
+    } catch (error) {
+      console.error('Failed to create chat bubble:', error);
+      // Fallback: create a simple chat bubble
+      createFallbackChatBubble(document.createElement('div'));
     }
   }
   
-  function analyzePage() {
-    return {
-      url: window.location.href,
-      title: document.title,
-      domain: window.location.hostname,
-      timestamp: Date.now(),
-      hasForms: document.forms.length > 0,
-      hasErrors: document.querySelectorAll('.error, .alert, .warning').length > 0
-    };
-  }
-  
-  function getPageInfo() {
-    return {
-      url: window.location.href,
-      title: document.title,
-      domain: window.location.hostname,
-      timestamp: Date.now()
-    };
-  }
-  
-  function observePageChanges() {
-    // Monitor for dynamic content changes
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'childList') {
-          // Check for new tech support related content
-          mutation.addedNodes.forEach((node) => {
-            if (node.nodeType === Node.ELEMENT_NODE) {
-              // Could implement content analysis here
-            }
-          });
-        }
-      });
+  function createFallbackChatBubble(container) {
+    // Create a simple fallback chat bubble if the main class fails
+    container.innerHTML = `
+      <div style="
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 300px;
+        height: 400px;
+        background: white;
+        border: 2px solid #007bff;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        z-index: 10000;
+        font-family: Arial, sans-serif;
+      ">
+        <div style="
+          background: #007bff;
+          color: white;
+          padding: 10px;
+          border-radius: 8px 8px 0 0;
+          font-weight: bold;
+          cursor: move;
+        ">🤖 Tech Support Assistant</div>
+        <div style="padding: 15px;">
+          <p>Extension loaded but some components failed to initialize.</p>
+          <p>Please check the console for errors and reload the extension.</p>
+        </div>
+      </div>
+    `;
+    
+    // Make it draggable
+    let isDragging = false;
+    let dragOffset = { x: 0, y: 0 };
+    
+    const header = container.querySelector('div');
+    header.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      dragOffset.x = e.clientX - container.offsetLeft;
+      dragOffset.y = e.clientY - container.offsetTop;
     });
     
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true
+    document.addEventListener('mousemove', (e) => {
+      if (isDragging) {
+        container.style.left = (e.clientX - dragOffset.x) + 'px';
+        container.style.top = (e.clientY - dragOffset.y) + 'px';
+      }
+    });
+    
+    document.addEventListener('mouseup', () => {
+      isDragging = false;
     });
   }
+  
+  // Monitor page for tech support related content
+  function observePageChanges() {
+    // This could be expanded to monitor for tech-related content
+    // and automatically suggest help when issues are detected
+  }
+  
 })();
