@@ -5,45 +5,23 @@ console.log('Enhanced Tech Support Assistant service worker loaded');
 chrome.runtime.onInstalled.addListener((details) => {
     console.log('Extension installed:', details.reason);
     
-    if (details.reason === 'install') {
-        // Set default settings on first install
-        chrome.storage.local.set({
-            enabled: true,
-            autoScan: false,
-            notifications: true,
-            chatBubbleVisible: true
-        });
-    }
+                    if (details.reason === 'install') {
+                    // Set default settings on first install
+                    chrome.storage.local.set({
+                        enabled: true,
+                        autoScan: false,
+                        notifications: true
+                    });
+                }
 });
 
-// Handle extension icon click (toggle chat bubble)
+// Handle extension icon click (open popup)
 chrome.action.onClicked.addListener(async (tab) => {
     try {
-        console.log('Extension icon clicked, toggling chat bubble');
-        
-        // Toggle chat bubble visibility
-        const result = await chrome.storage.local.get(['chatBubbleVisible']);
-        const newState = !result.chatBubbleVisible;
-        
-        await chrome.storage.local.set({ chatBubbleVisible: newState });
-        
-        // Check if content script is ready before sending message
-        try {
-            // Send message to content script to toggle visibility
-            await chrome.tabs.sendMessage(tab.id, {
-                action: 'toggleChatBubble',
-                visible: newState
-            });
-            
-            console.log('Chat bubble toggled:', newState);
-            
-        } catch (messageError) {
-            console.log('Content script not ready yet, will retry on next page load');
-            // The content script will pick up the state when it loads
-        }
-        
+        console.log('Extension icon clicked, opening popup');
+        // The popup will open automatically due to default_popup in manifest
     } catch (error) {
-        console.error('Failed to toggle chat bubble:', error);
+        console.error('Failed to handle extension click:', error);
     }
 });
 
@@ -71,10 +49,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             testDocumentationAccess(request.url, sendResponse);
             return true; // Keep message channel open for async response
             
-        case 'toggleChatBubble':
-            // Handle chat bubble toggle request
-            handleChatBubbleToggle(request.visible, sender.tab.id, sendResponse);
-            break;
+
             
         default:
             sendResponse({ error: 'Unknown action' });
@@ -249,22 +224,7 @@ function checkIfDocumentation(content, url) {
     return hasDocKeywords || hasDocUrlPattern || hasDocDomain;
 }
 
-// Handle chat bubble toggle
-async function handleChatBubbleToggle(visible, tabId, sendResponse) {
-    try {
-        console.log('Toggling chat bubble visibility:', visible);
-        
-        // Update storage
-        await chrome.storage.local.set({ chatBubbleVisible: visible });
-        
-        // Send response
-        sendResponse({ success: true, visible: visible });
-        
-    } catch (error) {
-        console.error('Failed to toggle chat bubble:', error);
-        sendResponse({ success: false, error: error.message });
-    }
-}
+
 
 // Handle tab updates for monitoring
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
@@ -274,19 +234,4 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     }
 });
 
-// Handle tab activation to ensure chat bubble state is correct
-chrome.tabs.onActivated.addListener(async (activeInfo) => {
-    try {
-        const result = await chrome.storage.local.get(['chatBubbleVisible']);
-        const isVisible = result.chatBubbleVisible !== false; // Default to true
-        
-        // Send current state to the newly activated tab
-        await chrome.tabs.sendMessage(activeInfo.tabId, {
-            action: 'setChatBubbleVisibility',
-            visible: isVisible
-        });
-        
-    } catch (error) {
-        console.error('Failed to sync chat bubble state:', error);
-    }
-});
+

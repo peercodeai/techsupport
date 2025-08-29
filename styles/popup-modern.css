@@ -6,12 +6,12 @@
 }
 
 html, body {
-    width: 380px;
-    height: 500px;
-    min-width: 380px;
-    min-height: 500px;
-    max-width: 600px;
-    max-height: 700px;
+    width: 350px;
+    height: 450px;
+    min-width: 350px;
+    min-height: 450px;
+    max-width: 500px;
+    max-height: 600px;
     overflow: hidden;
 }
 
@@ -30,14 +30,15 @@ body {
     background: #ffffff;
     border-radius: 20px;
     box-shadow: 
-        0 20px 40px rgba(0, 0, 0, 0.1),
-        0 8px 16px rgba(0, 0, 0, 0.06),
-        0 0 0 1px rgba(59, 130, 246, 0.1);
+        0 20px 40px rgba(0, 0, 0, 0.15),
+        0 8px 16px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(59, 130, 246, 0.2);
     overflow: hidden;
     position: relative;
     display: flex;
     flex-direction: column;
     cursor: move;
+    border: 2px solid rgba(59, 130, 246, 0.3);
 }
 
 /* ===== DRAGGABLE HEADER ===== */

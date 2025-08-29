@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Enhanced Tech Support Assistant",
   "version": "2.0.0",
-  "description": "Advanced tech support extension with AI chat, document crawling, and intelligent troubleshooting",
+  "description": "Advanced tech support extension with document upload, URL crawling, real-time monitoring, and intelligent troubleshooting",
   "permissions": [
     "activeTab",
     "storage",
@@ -18,8 +18,19 @@
   "background": {
     "service_worker": "background/service-worker.js"
   },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": [
+        "popup/chat-handler.js",
+        "popup/popup.js",
+        "content/content-script.js"
+      ],
+      "css": ["styles/content.css"],
+      "run_at": "document_start"
+    }
+  ],
   "action": {
-    "default_popup": "popup/popup.html",
     "default_title": "Enhanced Tech Support Assistant",
     "default_icon": {
       "16": "assets/icon16.png",
@@ -42,3 +53,4 @@
   ],
   "options_page": "popup/options.html"
 }
+
