@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Support Extension Test - Network Issue Testing</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+        .test-button.danger {
+            background: #dc3545;
+        }
+        .test-button.danger:hover {
+            background: #c82333;
+        }
+        .test-button.success {
+            background: #28a745;
+        }
+        .test-button.success:hover {
+            background: #218838;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+        .warning { background: #fff3cd; color: #856404; }
+        .url-input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .dev-tools-tip {
+            background: #e7f3ff;
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🌐 Network Issue Testing Dashboard</h1>
+    
+    <div class="test-section">
+        <h2>🔍 Extension Status</h2>
+        <div id="extensionStatus" class="status info">Checking extension status...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>🚨 Quick Network Issue Tests</h2>
+        <p>Click these buttons to trigger common network problems:</p>
+        
+        <div class="test-grid">
+            <button class="test-button danger" onclick="test404Error()">Test 404 Error</button>
+            <button class="test-button danger" onclick="test500Error()">Test 500 Error</button>
+            <button class="test-button danger" onclick="testNetworkError()">Test Network Error</button>
+            <button class="test-button danger" onclick="testTimeout()">Test Timeout</button>
+            <button class="test-button danger" onclick="testCORS()">Test CORS Error</button>
+            <button class="test-button danger" onclick="testDNSFailure()">Test DNS Failure</button>
+        </div>
+        
+        <div id="testResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>🎯 Manual Network Testing</h2>
+        <p>Test specific URLs or create custom network scenarios:</p>
+        
+        <h3>Common Problem URLs:</h3>
+        <div class="test-grid">
+            <button class="test-button" onclick="testUrl('https://httpstat.us/404')">404 Status</button>
+            <button class="test-button" onclick="testUrl('https://httpstat.us/500')">500 Status</button>
+            <button class="test-button" onclick="testUrl('https://httpstat.us/503')">503 Service Unavailable</button>
+            <button class="test-button" onclick="testUrl('https://httpstat.us/429')">429 Rate Limited</button>
+        </div>
+        
+        <h3>Custom URL Testing:</h3>
+        <input type="text" id="testUrl" placeholder="Enter URL to test (e.g., https://broken-api.com)" class="url-input">
+        <button class="test-button" onclick="testCustomUrl()">Test Custom URL</button>
+        
+        <h3>Advanced Testing:</h3>
+        <button class="test-button" onclick="testSlowRequest()">Test Slow Request (3s)</button>
+        <button class="test-button" onclick="testLargePayload()">Test Large Payload</button>
+        <button class="test-button" onclick="testConcurrentRequests()">Test Concurrent Requests</button>
+    </div>
+
+    <div class="test-section">
+        <h2>🛠️ Browser DevTools Testing</h2>
+        <div class="dev-tools-tip">
+            <strong>💡 Pro Tip:</strong> Use Chrome DevTools (F12) to simulate network conditions and trigger more realistic issues.
+        </div>
+        
+        <h3>Network Throttling:</h3>
+        <ol>
+            <li>Open DevTools (F12) → Network tab</li>
+            <li>Click the "No throttling" dropdown</li>
+            <li>Select "Slow 3G" or "Fast 3G"</li>
+            <li>Refresh the page or make requests</li>
+        </ol>
+        
+        <h3>Offline Mode:</h3>
+        <ol>
+            <li>Open DevTools (F12) → Network tab</li>
+            <li>Check "Offline" checkbox</li>
+            <li>Try to make any network request</li>
+            <li>Extension should detect the network failure</li>
+        </ol>
+        
+        <h3>Block Requests:</h3>
+        <ol>
+            <li>Open DevTools (F12) → Network tab</li>
+            <li>Right-click any request → "Block request URL"</li>
+            <li>Refresh page - blocked requests will fail</li>
+        </ol>
+    </div>
+
+    <div class="test-section">
+        <h2>📊 Extension Console & Monitoring</h2>
+        <p>Check these locations for extension activity:</p>
+        
+        <h3>Browser Console (F12):</h3>
+        <div class="code-block">
+            // Look for messages like:
+            // "Tech Support Extension: Network issue detected - GET https://example.com returned 404"
+            // "Tech Support Extension: Network error detected - GET https://broken.com failed: Failed to fetch"
+        </div>
+        
+        <h3>Extension Popup:</h3>
+        <ul>
+            <li>Click the extension icon in Chrome toolbar</li>
+            <li>Check "Recent Issues" section</li>
+            <li>Use "Open Chat Assistant" for AI-powered troubleshooting</li>
+        </ul>
+        
+        <h3>Background Script:</h3>
+        <ul>
+            <li>Go to chrome://extensions/</li>
+            <li>Find your extension → Click "service worker"</li>
+            <li>Check console for background processing logs</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>🧪 Testing Checklist</h2>
+        <div id="testingChecklist">
+            <p><input type="checkbox" onchange="updateChecklist(this)"> Extension loads without errors</p>
+            <p><input type="checkbox" onchange="updateChecklist(this)"> Network monitoring is active</p>
+            <p><input type="checkbox" onchange="updateChecklist(this)"> 404 errors are detected</p>
+            <p><input type="checkbox" onchange="updateChecklist(this)"> 500 errors are detected</p>
+            <p><input type="checkbox" onchange="updateChecklist(this)"> Network failures are detected</p>
+            <p><input type="checkbox" onchange="updateChecklist(this)"> Issues appear in extension popup</p>
+            <p><input type="checkbox" onchange="updateChecklist(this)"> Chat assistant responds to questions</p>
+            <p><input type="checkbox" onchange="updateChecklist(this)"> Console shows detailed logs</p>
+        </div>
+    </div>
+
+    <script>
+        // Check if extension is loaded
+        function checkExtensionStatus() {
+            if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id) {
+                document.getElementById('extensionStatus').innerHTML = 
+                    '<strong>✅ Extension Detected and Active</strong><br>' +
+                    'Extension ID: ' + chrome.runtime.id + '<br>' +
+                    'Status: Monitoring network activity...';
+                document.getElementById('extensionStatus').className = 'status success';
+            } else {
+                document.getElementById('extensionStatus').innerHTML = 
+                    '<strong>❌ Extension Not Detected</strong><br>' +
+                    'Make sure the extension is loaded in Chrome (chrome://extensions/)';
+                document.getElementById('extensionStatus').className = 'status error';
+            }
+        }
+
+        // Enhanced test functions
+        function test404Error() {
+            fetch('/nonexistent-page-' + Date.now())
+                .then(response => {
+                    addTestResult('404 Test', `Status: ${response.status}`, 'success');
+                })
+                .catch(error => {
+                    addTestResult('404 Test', `Error: ${error.message}`, 'error');
+                });
+        }
+
+        function test500Error() {
+            fetch('https://httpstat.us/500')
+                .then(response => {
+                    addTestResult('500 Test', `Status: ${response.status}`, 'success');
+                })
+                .catch(error => {
+                    addTestResult('500 Test', `Error: ${error.message}`, 'error');
+                });
+        }
+
+        function testNetworkError() {
+            fetch('https://nonexistent-domain-' + Date.now() + '.com')
+                .then(response => {
+                    addTestResult('Network Error Test', `Unexpected success: ${response.status}`, 'error');
+                })
+                .catch(error => {
+                    addTestResult('Network Error Test', `Expected error: ${error.message}`, 'success');
+                });
+        }
+
+        function testTimeout() {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 1000);
+            
+            fetch('https://httpstat.us/200?sleep=5000', { signal: controller.signal })
+                .then(response => {
+                    clearTimeout(timeoutId);
+                    addTestResult('Timeout Test', `Unexpected success: ${response.status}`, 'error');
+                })
+                .catch(error => {
+                    clearTimeout(timeoutId);
+                    if (error.name === 'AbortError') {
+                        addTestResult('Timeout Test', 'Request aborted as expected', 'success');
+                    } else {
+                        addTestResult('Timeout Test', `Unexpected error: ${error.message}`, 'error');
+                    }
+                });
+        }
+
+        function testCORS() {
+            fetch('https://api.github.com/users/nonexistent-user-' + Date.now())
+                .then(response => {
+                    addTestResult('CORS Test', `Status: ${response.status}`, 'success');
+                })
+                .catch(error => {
+                    addTestResult('CORS Test', `Error: ${error.message}`, 'success');
+                });
+        }
+
+        function testDNSFailure() {
+            fetch('https://broken-dns-' + Date.now() + '.invalid-tld')
+                .then(response => {
+                    addTestResult('DNS Failure Test', `Unexpected success: ${response.status}`, 'error');
+                })
+                .catch(error => {
+                    addTestResult('DNS Failure Test', `Expected error: ${error.message}`, 'success');
+                });
+        }
+
+        function testUrl(url) {
+            fetch(url)
+                .then(response => {
+                    addTestResult('URL Test', `${url} - Status: ${response.status}`, 'success');
+                })
+                .catch(error => {
+                    addTestResult('URL Test', `${url} - Error: ${error.message}`, 'success');
+                });
+        }
+
+        function testSlowRequest() {
+            const startTime = Date.now();
+            fetch('https://httpstat.us/200?sleep=3000')
+                .then(response => {
+                    const duration = Date.now() - startTime;
+                    addTestResult('Slow Request Test', `Completed in ${duration}ms - Status: ${response.status}`, 'success');
+                })
+                .catch(error => {
+                    addTestResult('Slow Request Test', `Error: ${error.message}`, 'error');
+                });
+        }
+
+        function testLargePayload() {
+            const largeData = 'x'.repeat(1000000); // 1MB of data
+            fetch('https://httpstat.us/200', {
+                method: 'POST',
+                body: largeData,
+                headers: { 'Content-Type': 'text/plain' }
+            })
+            .then(response => {
+                addTestResult('Large Payload Test', `Status: ${response.status}`, 'success');
+            })
+            .catch(error => {
+                addTestResult('Large Payload Test', `Error: ${error.message}`, 'success');
+            });
+        }
+
+        function testConcurrentRequests() {
+            const urls = [
+                'https://httpstat.us/200',
+                'https://httpstat.us/404',
+                'https://httpstat.us/500',
+                'https://httpstat.us/503'
+            ];
+            
+            const promises = urls.map(url => 
+                fetch(url).then(r => ({ url, status: r.status, success: true }))
+                         .catch(e => ({ url, error: e.message, success: false }))
+            );
+            
+            Promise.all(promises).then(results => {
+                const successCount = results.filter(r => r.success).length;
+                addTestResult('Concurrent Requests Test', `${successCount}/${urls.length} requests successful`, 'info');
+                
+                results.forEach(result => {
+                    if (result.success) {
+                        addTestResult('Concurrent Detail', `${result.url} - Status: ${result.status}`, 'success');
+                    } else {
+                        addTestResult('Concurrent Detail', `${result.url} - Error: ${result.error}`, 'error');
+                    }
+                });
+            });
+        }
+
+        function testCustomUrl() {
+            const url = document.getElementById('testUrl').value;
+            if (!url) {
+                alert('Please enter a URL to test');
+                return;
+            }
+
+            fetch(url)
+                .then(response => {
+                    addTestResult('Custom URL Test', `${url} - Status: ${response.status}`, 'success');
+                })
+                .catch(error => {
+                    addTestResult('Custom URL Test', `${url} - Error: ${error.message}`, 'success');
+                });
+        }
+
+        function addTestResult(testName, message, type) {
+            const resultsDiv = document.getElementById('testResults');
+            const resultDiv = document.createElement('div');
+            resultDiv.className = `status ${type}`;
+            resultDiv.innerHTML = `<strong>${testName}:</strong> ${message}`;
+            resultsDiv.appendChild(resultDiv);
+            
+            // Auto-remove after 15 seconds
+            setTimeout(() => resultDiv.remove(), 15000);
+        }
+
+        function updateChecklist(checkbox) {
+            const text = checkbox.parentNode.textContent;
+            if (checkbox.checked) {
+                checkbox.parentNode.style.textDecoration = 'line-through';
+                checkbox.parentNode.style.color = '#28a745';
+            } else {
+                checkbox.parentNode.style.textDecoration = 'none';
+                checkbox.parentNode.style.color = '#000';
+            }
+        }
+
+        // Check extension status on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            checkExtensionStatus();
+            
+            // Check again after a short delay to ensure extension is fully loaded
+            setTimeout(checkExtensionStatus, 1000);
+        });
+
+        // Listen for messages from the extension
+        if (typeof chrome !== 'undefined' && chrome.runtime) {
+            chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+                if (message.type === 'issueDetected') {
+                    addTestResult('Extension Issue Detection', 
+                        `Detected: ${message.details.method} ${message.details.url} - Status: ${message.details.statusCode}`, 'info');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Support Extension Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .error-button {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .warning-button {
+            background: #ffc107;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .info-button {
+            background: #17a2b8;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .docs-links {
+            margin: 10px 0;
+        }
+        .docs-links a {
+            display: block;
+            margin: 5px 0;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .docs-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 Tech Support Assistant v2.1 - Test Page</h1>
+        
+        <div class="test-section">
+            <h2>Extension Features Test</h2>
+            <p>This page is designed to test the enhanced Tech Support Assistant extension features:</p>
+            <ul>
+                <li>✅ Draggable chat bubble (click extension icon to toggle)</li>
+                <li>✅ Persistent conversations (chat history saved)</li>
+                <li>✅ Console error monitoring (try the buttons below)</li>
+                <li>✅ Documentation browsing (paste URLs in chat)</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h2>Console Error Testing</h2>
+            <p>Click these buttons to generate different types of console messages that the extension should detect:</p>
+            
+            <button class="error-button" onclick="generateError()">Generate Console Error</button>
+            <button class="warning-button" onclick="generateWarning()">Generate Console Warning</button>
+            <button class="info-button" onclick="generateInfo()">Generate Console Info</button>
+            <button class="error-button" onclick="generateUncaughtError()">Generate Uncaught Error</button>
+        </div>
+
+        <div class="test-section">
+            <h2>Documentation URLs for Testing</h2>
+            <p>Copy these URLs and paste them in the chat bubble to test documentation browsing:</p>
+            <div class="docs-links">
+                <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
+                    https://developer.mozilla.org/en-US/docs/Web/JavaScript
+                </a>
+                <a href="https://reactjs.org/docs/getting-started.html" target="_blank">
+                    https://reactjs.org/docs/getting-started.html
+                </a>
+                <a href="https://nodejs.org/en/docs/" target="_blank">
+                    https://nodejs.org/en/docs/
+                </a>
+                <a href="https://developer.chrome.com/docs/extensions/" target="_blank">
+                    https://developer.chrome.com/docs/extensions/
+                </a>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>API Key Setup</h2>
+            <p>To test the AI functionality:</p>
+            <ol>
+                <li>Right-click the extension icon and select "Options"</li>
+                <li>Enter your OpenAI API key: <code>sk-proj-your-api-key-here</code></li>
+                <li>Click "Save API Key" and "Test Connection"</li>
+                <li>Return to this page and click the extension icon to open the chat bubble</li>
+            </ol>
+        </div>
+
+        <div class="test-section">
+            <h2>Testing Instructions</h2>
+            <ol>
+                <li><strong>Draggable Bubble:</strong> Click the extension icon to show the chat bubble, then drag it by the header</li>
+                <li><strong>Persistent Chat:</strong> Send a message, close the bubble, reopen it - your message should still be there</li>
+                <li><strong>Console Monitoring:</strong> Click the error buttons above and see if the bubble shows console errors</li>
+                <li><strong>Documentation Help:</strong> Paste a documentation URL in the chat and ask a related question</li>
+                <li><strong>Error Analysis:</strong> Generate errors and ask the AI to help troubleshoot them</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        // Test functions to generate console messages
+        function generateError() {
+            console.error('Test Error: This is a sample error message for testing the extension');
+            console.error('TypeError: Cannot read property "test" of undefined', {
+                stack: 'at generateError (test-extension.html:123:45)',
+                line: 123,
+                column: 45
+            });
+        }
+
+        function generateWarning() {
+            console.warn('Test Warning: This is a sample warning message');
+            console.warn('Deprecated API usage detected in test function');
+        }
+
+        function generateInfo() {
+            console.info('Test Info: Extension monitoring is working correctly');
+            console.log('Debug: User clicked info button at', new Date().toISOString());
+        }
+
+        function generateUncaughtError() {
+            // This will generate an uncaught error
+            setTimeout(() => {
+                throw new Error('Uncaught Test Error: This should be detected by the extension');
+            }, 100);
+        }
+
+        // Generate a promise rejection
+        function generatePromiseRejection() {
+            Promise.reject(new Error('Unhandled Promise Rejection: Test error for extension'));
+        }
+
+        // Add some initial console messages
+        console.log('Tech Support Extension Test Page loaded successfully');
+        console.info('Ready to test extension features');
+
+        // Test the extension's ability to detect existing errors
+        window.addEventListener('load', () => {
+            console.log('Page fully loaded - extension should be monitoring console now');
+        });
+    </script>
+</body>
+</html>
+

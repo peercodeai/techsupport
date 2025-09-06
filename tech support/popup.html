@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tech Support Extension</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="popup-container">
+        <h2>Tech Support Extension</h2>
+        
+        <div class="status-section">
+            <h3>Status</h3>
+            <p>Monitoring network activity...</p>
+        </div>
+
+        <div class="issues-section">
+            <h3>Recent Issues</h3>
+            <div id="issueList"></div>
+        </div>
+
+        <div class="chat-section">
+            <button id="openChat" class="chat-button">Open Chat Assistant</button>
+            
+            <div id="chatContainer" class="chat-container" style="display: none;">
+                <div class="chat-header">
+                    <h4>AI Tech Support Chat</h4>
+                </div>
+                
+                <div id="chatMessages" class="chat-messages"></div>
+                
+                <div class="chat-input-container">
+                    <input type="text" id="chatInput" placeholder="Type your tech support question..." class="chat-input">
+                    <button id="sendButton" class="send-button">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="popup.js"></script>
+</body>
+</html>
+
+

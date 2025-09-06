@@ -1,0 +1,22 @@
+{
+  "name": "tech-support-extension-test",
+  "version": "1.0.0",
+  "description": "Test environment for Tech Support Chrome Extension",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "echo \"Open http://localhost:3000 in Chrome to test the extension\""
+  },
+  "keywords": [
+    "chrome-extension",
+    "tech-support",
+    "testing",
+    "network-monitoring"
+  ],
+  "author": "Tech Support Extension Developer",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

@@ -1,0 +1,11 @@
+- [x] Analyze existing Chrome extension
+- [x] Download and examine source code
+- [x] Implement improvements and new features
+  - [x] Enable draggable functionality for the extension window.
+  - [x] Implement persistence for conversations so they don't close and lose context.
+  - [x] Proactively access and diagnose errors in the user's console log.
+  - [x] Implement browsing of outside links for documentation when prompted.
+- [x] Test the improved extension locally
+- [x] Package extension for Chrome Web Store
+- [x] Deliver final package and recommendations
+

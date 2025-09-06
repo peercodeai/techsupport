@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Support Assistant</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            width: 350px;
+            height: 500px;
+            background: #ffffff;
+        }
+        
+        .chat-bubble-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .chat-bubble-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: move;
+            user-select: none;
+        }
+        
+        .settings-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+        
+        .settings-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #6b7280;
+            margin-right: 8px;
+        }
+        
+        .status-indicator.connected {
+            background: #10b981;
+        }
+        
+        .status-indicator.error {
+            background: #ef4444;
+        }
+        
+        .chat-bubble-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+        }
+        
+        .welcome-message {
+            text-align: center;
+            color: #6b7280;
+        }
+        
+        .chat-input-area {
+            padding: 12px 16px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            gap: 8px;
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #374151 !important;
+            background: #ffffff !important;
+            outline: none;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        }
+        
+        .chat-input::placeholder {
+            color: #9ca3af !important;
+        }
+        
+        .chat-input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .send-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        
+        .message {
+            margin-bottom: 12px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+        
+        .message.user {
+            background: #3b82f6;
+            color: white;
+            margin-left: 20px;
+        }
+        
+        .message.assistant {
+            background: #f3f4f6;
+            color: #374151;
+            margin-right: 20px;
+        }
+        
+        .message.system {
+            background: #fef3c7;
+            color: #92400e;
+            font-style: italic;
+            text-align: center;
+        }
+        
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 12px;
+            background: #f3f4f6;
+            border-radius: 8px;
+            margin-right: 20px;
+            margin-bottom: 12px;
+        }
+        
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: #6b7280;
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-bubble-container">
+        <!-- Draggable Header -->
+        <div class="chat-bubble-header" id="drag-handle">
+            <div class="status-indicator" id="status-light"></div>
+            <div class="status-indicator doc-status" id="doc-status-light" title="Documentation Status"></div>
+            <h3>Tech Support Assistant</h3>
+            <button id="settings-btn" class="settings-btn" title="Settings">⚙️</button>
+        </div>
+
+        <!-- Chat Content -->
+        <div class="chat-bubble-content">
+            <div class="chat-messages" id="chat-messages">
+                <div class="welcome-message">
+                    <h3>👋 Need Tech Help?</h3>
+                    <p>I'm here to assist with any technical issues. Just ask!</p>
+                </div>
+            </div>
+            
+            <div class="chat-input-area">
+                <input type="text" id="chat-input" placeholder="Describe your issue..." class="chat-input">
+                <button id="send-btn" class="send-btn">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="popup.js"></script>
+</body>
+</html>
+

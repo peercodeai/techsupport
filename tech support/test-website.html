@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Support Extension Test Site</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .test-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .test-button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 16px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .status {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: monospace;
+        }
+        
+        .error-log {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .success-log {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Tech Support Extension Test Site</h1>
+        
+        <div class="test-section">
+            <h2>Network Issue Testing</h2>
+            <p>Click these buttons to test the extension's network monitoring capabilities:</p>
+            
+            <button class="test-button" onclick="test404Error()">Test 404 Error</button>
+            <button class="test-button" onclick="test500Error()">Test 500 Error</button>
+            <button class="test-button" onclick="testTimeoutError()">Test Timeout</button>
+            <button class="test-button" onclick="testCORS()">Test CORS Error</button>
+            <button class="test-button" onclick="testNetworkError()">Test Network Error</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>Extension Status</h2>
+            <div id="extensionStatus" class="status">
+                Checking extension status...
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>Test Results</h2>
+            <div id="testResults" class="status">
+                No tests run yet. Click the buttons above to start testing.
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>Error Log</h2>
+            <div id="errorLog" class="error-log">
+                Network errors will appear here...
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>Success Log</h2>
+            <div id="successLog" class="success-log">
+                Successful requests will appear here...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if extension is installed and active
+        function checkExtensionStatus() {
+            if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessage) {
+                document.getElementById('extensionStatus').innerHTML = 
+                    '✅ Extension detected and active!<br>Extension ID: ' + chrome.runtime.id;
+            } else {
+                document.getElementById('extensionStatus').innerHTML = 
+                    '❌ Extension not detected. Make sure it\'s loaded in Chrome.';
+            }
+        }
+
+        // Test functions that will trigger network issues
+        function test404Error() {
+            logTest('Testing 404 error...');
+            fetch('/nonexistent-page')
+                .then(response => {
+                    if (!response.ok) {
+                        logError(`404 Error: ${response.status} ${response.statusText}`);
+                    }
+                })
+                .catch(error => logError(`Fetch error: ${error.message}`));
+        }
+
+        function test500Error() {
+            logTest('Testing 500 error...');
+            fetch('https://httpstat.us/500')
+                .then(response => {
+                    if (!response.ok) {
+                        logError(`500 Error: ${response.status} ${response.statusText}`);
+                    }
+                })
+                .catch(error => logError(`Fetch error: ${error.message}`));
+        }
+
+        function testTimeoutError() {
+            logTest('Testing timeout error...');
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 1000);
+            
+            fetch('https://httpstat.us/200?sleep=5000', { signal: controller.signal })
+                .then(response => response.text())
+                .catch(error => {
+                    if (error.name === 'AbortError') {
+                        logError('Request timeout after 1 second');
+                    } else {
+                        logError(`Fetch error: ${error.message}`);
+                    }
+                    clearTimeout(timeoutId);
+                });
+        }
+
+        function testCORS() {
+            logTest('Testing CORS error...');
+            fetch('https://api.github.com/users/nonexistent-user')
+                .then(response => {
+                    if (!response.ok) {
+                        logError(`CORS/API Error: ${response.status} ${response.statusText}`);
+                    }
+                })
+                .catch(error => logError(`CORS error: ${error.message}`));
+        }
+
+        function testNetworkError() {
+            logTest('Testing network error...');
+            fetch('https://invalid-domain-that-does-not-exist-12345.com')
+                .catch(error => logError(`Network error: ${error.message}`));
+        }
+
+        // Logging functions
+        function logTest(message) {
+            const results = document.getElementById('testResults');
+            results.innerHTML = `🔄 ${message}`;
+        }
+
+        function logError(message) {
+            const errorLog = document.getElementById('errorLog');
+            const timestamp = new Date().toLocaleTimeString();
+            errorLog.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            errorLog.scrollTop = errorLog.scrollHeight;
+        }
+
+        function logSuccess(message) {
+            const successLog = document.getElementById('successLog');
+            const timestamp = new Date().toLocaleTimeString();
+            successLog.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            successLog.scrollTop = successLog.scrollHeight;
+        }
+
+        // Listen for messages from the extension
+        if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.onMessage) {
+            chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+                if (message.type === 'issueDetected') {
+                    logError(`Extension detected issue: ${message.details.statusCode} ${message.details.method} ${message.details.url}`);
+                } else if (message.type === 'solutionFound') {
+                    logSuccess(`Extension found solution for issue ${message.issueId}: ${message.solution}`);
+                }
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            checkExtensionStatus();
+            
+            // Test a successful request
+            fetch('https://httpstat.us/200')
+                .then(response => {
+                    if (response.ok) {
+                        logSuccess('✅ Test site loaded successfully');
+                    }
+                })
+                .catch(error => logError(`Initial load error: ${error.message}`));
+        });
+    </script>
+</body>
+</html>

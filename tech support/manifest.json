@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "Tech Support Browser Extension",
+  "version": "1.0",
+  "description": "Proactive tech support extension: monitors network, detects issues, provides troubleshooting via AI chatbot and documentation.",
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "host_permissions": [
+    "http://localhost/*",
+    "https://localhost/*",
+    "http://127.0.0.1/*",
+    "https://127.0.0.1/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon16.png",
+      "48": "icon128.png",
+      "128": "icon128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://localhost/*",
+        "https://localhost/*",
+        "http://127.0.0.1/*",
+        "https://127.0.0.1/*"
+      ],
+      "js": ["content.js"]
+    }
+  ]
+}
+

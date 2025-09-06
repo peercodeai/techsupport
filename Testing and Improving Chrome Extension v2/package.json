@@ -1,0 +1,46 @@
+{
+  "name": "enhanced-tech-support-assistant",
+  "version": "2.1.1",
+  "description": "A powerful Chrome extension that provides AI-powered tech support directly in your browser",
+  "main": "content-script.js",
+  "scripts": {
+    "build": "echo 'No build process needed - ready to load as unpacked extension'",
+    "test": "echo 'No tests specified'",
+    "lint": "echo 'No linter configured'",
+    "package": "zip -r enhanced-tech-support-assistant-v2.1.zip . -x '*.git*' 'node_modules/*' '*.md' 'package*.json'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/enhanced-tech-support-assistant.git"
+  },
+  "homepage": "https://chromewebstore.google.com/detail/mlphakpkofdcigfpcpmgomhgalodhlkm",
+  "chromeWebStore": "https://chromewebstore.google.com/detail/mlphakpkofdcigfpcpmgomhgalodhlkm",
+  "demo": "https://enhanced-7hxm5o.manus.space/",
+  "keywords": [
+    "chrome-extension",
+    "tech-support",
+    "ai",
+    "openai",
+    "debugging",
+    "documentation",
+    "assistant",
+    "browser-extension"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yourusername/enhanced-tech-support-assistant/issues"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "devDependencies": {},
+  "dependencies": {},
+  "manifest": {
+    "manifest_version": 3,
+    "name": "Enhanced Tech Support Assistant",
+    "version": "2.1.1",
+    "description": "Advanced tech support extension with AI chat, document crawling, and intelligent troubleshooting"
+  }
+}
+
